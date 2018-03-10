@@ -1,3 +1,7 @@
-FROM tiangolo/uwsgi-nginx-flask:flask
+FROM python:latest
 
-COPY ./app /app
+RUN pip install flask
+COPY app /app
+WORKDIR /app
+#ENTRYPOINT ["python main.py"]
+
