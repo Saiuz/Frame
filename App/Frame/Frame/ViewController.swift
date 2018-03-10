@@ -14,12 +14,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var IconStack: UIStackView!
     @IBOutlet weak var memoriesLabel: UILabel!
     
-    @IBOutlet weak var codeGroup: UIStackView!
-    
     @IBOutlet weak var code1: UITextField!
-    @IBOutlet weak var code2: UITextField!
-    @IBOutlet weak var code3: UITextField!
-    @IBOutlet weak var code4: UITextField!
     
     var didHitSetup = false
     var current_code = ""
@@ -31,18 +26,18 @@ class ViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        self.codeGroup.alpha = 0.0
+        self.code1.alpha = 0.0
         self.SetupButton.layer.cornerRadius = 8
         self.code1.delegate = self
-        self.code1.keyboardType = .numberPad
-        self.code2.delegate = self
+        self.code1.keyboardType = .phonePad
+        /*self.code2.delegate = self
         self.code2.keyboardType = .numberPad
         self.code3.delegate = self
         self.code3.keyboardType = .numberPad
         self.code4.delegate = self
-        self.code4.keyboardType = .numberPad
+        self.code4.keyboardType = .numberPad*/
         
-        self.text_boxes = [self.code1, self.code2, self.code3, self.code4]
+        self.text_boxes = [self.code1]//, self.code2, self.code3, self.code4]
     }
 
     override func didReceiveMemoryWarning() {
@@ -50,19 +45,27 @@ class ViewController: UIViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
+
+    @IBAction func editChanged(_ sender: UITextField) {
+        print("Editing Changed!")
+    
         self.current_code = ""
-        for text: UITextField in self.text_boxes {
-            if text.text != "" {
-                self.current_code.append(text.text)
-            }
+        if let tmp = sender.text, tmp != "" {
+            print("Adding Character!")
+            self.current_code.append(tmp)
         }
         
-        self.moveTextField(textField: textField)
+        print("Current Code: \(self.current_code)")
+        //self.moveTextField()
+        if self.current_code.count >= 4 {
+            sender.resignFirstResponder()
+            self.performSegue(withIdentifier: "connectAccounts", sender: self)
+        }
     }
-    
-    func moveTextField(textField: UITextField) {
+    /*
+    func moveTextField() {
         let current_index = self.current_code.count
+        print("Current Index: \(current_index)")
         let lastTextBox: UITextField = self.text_boxes[current_index]
         lastTextBox.resignFirstResponder()
         
@@ -71,7 +74,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             nextTextBox.becomeFirstResponder()
         }
         
-    }
+    }*/
     
     
     
@@ -87,7 +90,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             self.IconStack.center = CGPoint(x: self.IconStack.center.x, y: 77 + (self.IconStack.frame.height / 2) )
             
             // Display Numbers and keyboard
-            self.codeGroup.alpha = 1.0
+            self.code1.alpha = 1.0
             }) { (error) in
                 self.SetupButton.isEnabled = false
                 self.SetupButton.isHidden = true

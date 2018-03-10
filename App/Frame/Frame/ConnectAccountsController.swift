@@ -40,7 +40,6 @@ class ConnectAccountsController: UIViewController {
     
     @IBAction func didFinish(_ sender: Any) {
         
-        
     }
     
     /*
