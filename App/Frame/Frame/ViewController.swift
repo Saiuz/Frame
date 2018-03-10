@@ -24,7 +24,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     var didHitSetup = false
     var current_code = ""
     
-    let text_boxes = [self.code1, self.code2, self.code3, self.code4]
+    var text_boxes: [UITextField]!
     
     
     override func viewDidLoad() {
@@ -41,6 +41,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
         self.code3.keyboardType = .numberPad
         self.code4.delegate = self
         self.code4.keyboardType = .numberPad
+        
+        self.text_boxes = [self.code1, self.code2, self.code3, self.code4]
     }
 
     override func didReceiveMemoryWarning() {
@@ -51,8 +53,12 @@ class ViewController: UIViewController, UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         self.current_code = ""
         for text: UITextField in self.text_boxes {
-            if text.text
+            if text.text != "" {
+                self.current_code.append(text.text)
+            }
         }
+        
+        self.moveTextField(textField: textField)
     }
     
     func moveTextField(textField: UITextField) {
