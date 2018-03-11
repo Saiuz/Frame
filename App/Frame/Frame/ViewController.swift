@@ -8,6 +8,11 @@
 
 import UIKit
 
+struct Employee: Codable {
+    var name: String
+    var id: Int
+}
+
 class ViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var codeLabel: UILabel!
@@ -62,9 +67,77 @@ class ViewController: UIViewController, UITextFieldDelegate {
         //self.moveTextField()
         if self.current_code.count >= 4 {
             sender.resignFirstResponder()
+            self.sendVerificationCode()
             self.performSegue(withIdentifier: "connectAccounts", sender: self)
         }
     }
+    
+    func sendVerificationCode() {
+        let defaults = UserDefaults.standard
+        defaults.set(self.current_code, forKey: "current_code")
+        
+        
+        let url = URL(string: "http://35.230.80.120:8080/code")
+        
+        var todosUrlRequest = URLRequest(url: url!)
+        todosUrlRequest.httpMethod = "POST"
+        todosUrlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
+        do {
+            let dic = ["code": self.current_code]
+            let jsonData = try? JSONSerialization.data(withJSONObject: dic, options: [])
+            
+            todosUrlRequest.httpBody = jsonData
+            // See if it's right
+            if let bodyData = todosUrlRequest.httpBody {
+                print(String(data: bodyData, encoding: .utf8) ?? "no body data")
+            }
+        } catch {
+            print(error)
+            //completionHandler(nil, error)
+        }
+        
+        let session = URLSession.shared
+        
+        let task = session.dataTask(with: todosUrlRequest, completionHandler: {
+            (data, response, error) in
+            guard error == nil else {
+                print(error)
+                //completionHandler(nil, error!)
+                return
+            }
+            
+            print(String(data: data!, encoding: .utf8))
+            
+            if let jsonData = data, let data2 = try? JSONSerialization.jsonObject(with: jsonData, options: []) {
+                    print("data!", data2)
+            }
+            
+            print("Something Happened!")
+            // TODO: parse response
+            
+            //completionHandler(nil, nil)
+        })
+        task.resume()
+        
+        /*
+        let task = URLSession.shared.dataTask(with: url! as URL) { data, response, error in
+            
+            guard let data = data, error == nil else { return }
+            let jsonDecoder = JSONDecoder()
+            
+            do {
+                let jsonData = try jsonDecoder.decode(Employee.self, from: data)
+                print(jsonData)
+                
+            } catch {
+                print(error)
+            }
+        }
+        
+        task.resume()
+        */
+    }
+    
     /*
     func moveTextField() {
         let current_index = self.current_code.count
