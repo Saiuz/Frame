@@ -1,7 +1,7 @@
 from memnet import Memnet
 
-from flask import Flask
-import bottle
+from flask import Flask, request, jsonify
+import urllib
 import cv2
 from skimage.measure import compare_ssim
 import glob
@@ -13,17 +13,19 @@ model = Memnet()
 
 @app.route('/')
 def f():
-    return 'App running'
+    return 'App'
 
-@app.route('/score')
+@app.route('/score', methods = ['POST'])
 def caclulate_score():
-    data = bottle.request.json
+    image_link = request.form['data']
+    print(image_link)
+    urllib.urlretrieve(image_link, "image.jpg")
 
-    return model.calculate_score(pic)
+    return jsonify(model.calculate_memorability('./image.jpg'))
 
-@app.route('/compare')
+@app.route('/compare', methods = ['POST'])
 def compare_photos():
-    data = bottle.request.json
+    data = request.form['data']
 
     # TODO: Fix this implementation
     for i in xrange(len(pics)):
