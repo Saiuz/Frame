@@ -14,21 +14,13 @@ class App extends Component {
 		
 		this.state = {mode: "verify", code: "9991"};
 		let refreshInterval = 10000;
-		
+		this.getMode();
 		let modeUpdate = setInterval(this.getMode.bind(this), refreshInterval);
 	}
 	
 	getMode() {
-		fetch(serverURL + "/mode", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				"Accept": "application/json",
-			},
-			body: JSON.stringify({
-				code: this.state.code,
-			})
-		}).then(response => {
+		axios.get(serverURL + "/get_mode?code="+this.state.code)
+		.then(response => {
             console.log(response);
             this.setState({ mode: response.data });
         }).catch(response => {
