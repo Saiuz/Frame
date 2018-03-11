@@ -7,8 +7,11 @@
 //
 
 import UIKit
+import FacebookLogin
+import FacebookCore
 
-class ConnectAccountsController: UIViewController {
+class ConnectAccountsController: UIViewController, LoginButtonDelegate {
+    
     @IBOutlet weak var IconStack: UIStackView!
     
     @IBOutlet weak var FBButton: UIButton!
@@ -21,6 +24,12 @@ class ConnectAccountsController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let loginButton = LoginButton(readPermissions: [.userPhotos])
+        loginButton.center = view.center
+        loginButton.delegate = self
+        
+        view.addSubview(loginButton)
+        
         let defaults = UserDefaults.standard
         if let stringOne = defaults.string(forKey: "current_code") {
             self.current_code = stringOne
@@ -29,6 +38,16 @@ class ConnectAccountsController: UIViewController {
         self.finishButton.layer.cornerRadius = 8
         
         // Do any additional setup after loading the view.
+    }
+    
+    func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
+        if let accessToken = AccessToken.current {
+            print(accessToken.authenticationToken)
+        }
+    }
+    
+    func loginButtonDidLogOut(_ loginButton: LoginButton) {
+        
     }
 
     override func didReceiveMemoryWarning() {
