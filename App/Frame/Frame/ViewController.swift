@@ -46,6 +46,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             txt.keyboardType = .numberPad
             txt.font = UIFont(name: "Helvetica", size: 30)
             txt.layer.cornerRadius = 8
+            txt.textAlignment = .center
         }
         
     }

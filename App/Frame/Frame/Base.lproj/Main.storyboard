@@ -63,9 +63,8 @@
                                     <action selector="hitSetupButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6d2-MP-y59"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Enter Code From Frame" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OZ5-q9-dE8">
-                                <rect key="frame" x="90.5" y="245" width="194" height="23.5"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter Code From Frame" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OZ5-q9-dE8">
+                                <rect key="frame" x="90.5" y="255" width="194" height="23.5"/>
                                 <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -128,6 +127,8 @@
                         <constraints>
                             <constraint firstItem="ZCB-5X-9vW" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="-10" id="JYF-JK-GBx"/>
                             <constraint firstItem="ZCB-5X-9vW" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="VI6-kE-LbA"/>
+                            <constraint firstItem="ZCB-5X-9vW" firstAttribute="top" secondItem="OZ5-q9-dE8" secondAttribute="bottom" constant="20" id="eF2-8b-rrv"/>
+                            <constraint firstItem="OZ5-q9-dE8" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="gKR-tW-AgZ"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
