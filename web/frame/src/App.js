@@ -31,7 +31,7 @@ class App extends Component {
   render() {
 	let widget;
 	if (this.state.mode == "photos") {
-		widget = <Carousel />
+		widget = <Carousel mode={this.state.mode} code={this.state.code}/>
 	} else if (this.state.mode == "verify") {
 		widget = <Verify mode={this.state.mode} code={this.state.code}/>
 	} else {
