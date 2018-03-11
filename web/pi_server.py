@@ -5,7 +5,6 @@ from flask import Flask, jsonify
 app = Flask(__name__)
 verification_required = True
 
-
 @app.route('/')
 def f():
     return 'Raspberry Pi App running'
