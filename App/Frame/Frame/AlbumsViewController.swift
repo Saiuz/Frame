@@ -10,7 +10,7 @@ import UIKit
 
 class AlbumsViewController: UITableViewController {
     
-    var enabled_services: [[Bool]]?
+    var  enabled_services = [[Bool]]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,13 +26,16 @@ class AlbumsViewController: UITableViewController {
         return ["Facebook"]
     }
     
-    func getEnabled() {
-        if self.enabled_services == nil {
-            let albums = self.getAlbums()
-            for al in albums {
-                self.enabled_services?.append([])
-            }
+    func getEnabled() -> [[Bool]] {
+        var enabled_services = [[Bool]]()
+        let albums = self.getAlbums()
+        for al in albums {
+            enabled_services.append([Bool](repeating: false, count: al.count))
         }
+        if self.enabled_services.count == 0 {
+            self.enabled_services = enabled_services
+        }
+        return self.enabled_services
     }
     
     func getAlbums() -> [[String]] {
@@ -67,11 +70,22 @@ class AlbumsViewController: UITableViewController {
         cell.textLabel?.text = self.getAlbums()[indexPath.section][indexPath.row]
         cell.backgroundColor = UIColor(red: 22.0/255.0, green: 22.0/255, blue: 22.0/255.0, alpha: 1.0)
         cell.textLabel?.textColor = .white
-        cell.accessoryType = .checkmark
+        if self.getEnabled()[indexPath.section][indexPath.row] {
+            cell.accessoryType = .checkmark
+        } else {
+            cell.accessoryType = .none
+        }
+        
         return cell
     }
- 
-
+    
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("Updating: \(self.getAlbums()[indexPath.section][indexPath.row])")
+        self.enabled_services[indexPath.section][indexPath.row] = !self.enabled_services[indexPath.section][indexPath.row]
+        tableView.reloadData()
+    }
+    
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
