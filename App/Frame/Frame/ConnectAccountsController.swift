@@ -26,6 +26,8 @@ class ConnectAccountsController: UIViewController {
             self.current_code = stringOne
         }
         
+        self.finishButton.layer.cornerRadius = 8
+        
         // Do any additional setup after loading the view.
     }
 
