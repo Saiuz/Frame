@@ -38,7 +38,7 @@ def get_images():
     })
     resp.headers.add('Access-Control-Allow-Origin', '*')
 
-	return jsonify(sample_data)
+	return resp
 
 if __name__ == '__main__':
     try:
