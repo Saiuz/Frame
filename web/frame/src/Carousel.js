@@ -4,7 +4,7 @@ import Loading from "./Loading.js"
 import PropTypes from 'prop-types';
 import "./Carousel.css"
 import axios from "axios";
-
+import serverURL from "./Const.js"
 
 class Carousel extends React.Component {
 	constructor(props) {
@@ -32,7 +32,7 @@ class Carousel extends React.Component {
 			console.log("Not done downloading last batch!")
 			return;
 		}
-		axios.get("http://localhost:8080/get_images").then(response => {
+		axios.get(serverURL + "/get_images").then(response => {
             console.log(response);
             this.setState({ images: response.data.images/*, loadedItems: []*/ });
         }).catch(response => {
