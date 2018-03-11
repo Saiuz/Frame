@@ -8,22 +8,47 @@ import glob
 
 app = Flask(__name__)
 model = Memnet()
+hardcoded_images = ['https://i.pinimg.com/originals/62/20/d2/6220d255154fad0c911a3cb4c0072031.jpg',
+                   'https://i.pinimg.com/originals/8b/a1/01/8ba101bc0e6fb061e79bef8c7bac97cc.jpg']
+code_verified = {}
+code_to_token = {}
+code_to_images = {}
 
-#list_pics = glob.glob('./app/images/*.jpg')
+@app.route('/mode', methods = ['POST'])
+def get_mode():
+    print(request.form)
+    code = request.form['code']
+    print(code)
 
-@app.route('/')
-def f():
-    return 'App'
+    if code not in code_verified or not code_verified[code]:
+        code_verified[code] = False
+        resp = jsonify('verify')
+        print("VERIFY CALLED")
 
-@app.route('/score', methods = ['POST'])
-def caclulate_score():
+    resp = jsonify('photos')
+    resp.headers.add('Access-Control-Allow-Origin', '*')
+
+    return resp
+
+@app.route('/get_images', methods = ['POST'])
+def get_images():
+    code = request.form['code']
+
+    code_to_images[code] = hardcoded_images
+
+    resp = jsonify({
+		'images': [image for image in images if calculate_score(image) > 0.8]
+	})
+    resp.headers.add('Access-Control-Allow-Origin', '*')
+
+    return resp
+
+def caclulate_score(image_link):
     image_link = request.form['data']
-    print(image_link)
     urllib.urlretrieve(image_link, "image.jpg")
 
-    return jsonify(model.calculate_memorability('./image.jpg'))
+    return model.calculate_memorability('./image.jpg')
 
-@app.route('/compare', methods = ['POST'])
 def compare_photos():
     data = request.form['data']
 
@@ -43,6 +68,25 @@ def compare_photos():
                     pics.pop(j)
 
     return pics
+
+@app.route('/code_verified', methods = ['POST']) # Received from phone
+def code_exists():
+    print(request.form)
+    code = request.form['code']
+    print(code)
+
+    if code in code_verified:
+        code_verified[code] = True
+        return jsonify(1)
+    else:
+        return jsonify(-1)
+
+@app.route('/token', methods = ['POST']) # Received from phone
+def store_token():
+    code = request.form['code']
+    token = request.form['token']
+
+    code_to_token[code] = token
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
