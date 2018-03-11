@@ -1,0 +1,6 @@
+use_frameworks!
+target 'Frame' do
+	pod 'FacebookCore'
+	pod 'FacebookLogin'
+	pod 'FacebookShare'
+end
