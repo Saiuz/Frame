@@ -15,20 +15,17 @@ code_to_token = {}
 code_to_images = {}
 score_cache = {}
 
-@app.route('/mode', methods = ['POST'])
+@app.route('/get_mode')
 def get_mode():
-    print(request.form)
-    code = request.form['code']
-    print(code)
+    code = request.args.get('code')
 
     if code not in code_verified or not code_verified[code]:
         code_verified[code] = False
         resp = jsonify('verify')
-        print("VERIFY CALLED")
+    else:
+        resp = jsonify('photos')
 
-    resp = jsonify('photos')
     resp.headers.add('Access-Control-Allow-Origin', '*')
-
     return resp
 
 @app.route('/get_images', methods = ['POST'])
