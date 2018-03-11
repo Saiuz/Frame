@@ -11,11 +11,10 @@ class App extends Component {
 		
 		// Mode can be "photos" or "verify"
 		
-		this.state = {images: [], mode: "verify"};
+		this.state = {mode: "verify"};
 		let refreshInterval = 10000;
 		
 		let modeUpdate = setInterval(this.getMode.bind(this), refreshInterval);
-		let imgUpdate = setInterval(this.getImages.bind(this), refreshInterval);
 	}
 	
 	getMode() {
@@ -27,21 +26,12 @@ class App extends Component {
         });
 	}
 	
-	getImages() {
-		axios.get("http://localhost:8080/get_images").then(response => {
-            console.log(response);
-            this.setState({ images: response.data.images });
-        }).catch(response => {
-            // Do nothing if no server found.
-        });
-	}
-	
   render() {
 	let widget;
 	if (this.state.mode == "photos") {
-		widget = <Carousel img={this.state.images}/>
+		widget = <Carousel />
 	} else if (this.state.mode == "verify") {
-		widget = <Verify/>
+		widget = <Verify mode={this.state.mode}/>
 	} else {
 		widget = <div></div>
 	}
