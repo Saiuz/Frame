@@ -1,1 +1,1 @@
-docker run -it -p 8080:80 flask bash i
+docker run -it -p 8080:8080 flask bash i
