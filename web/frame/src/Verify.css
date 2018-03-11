@@ -1,4 +1,4 @@
-.verification-code-grid {
+.verification-code-grid, .loading-grid {
 	color: white;
 	background-color: #363434;
 	position: relative;
@@ -12,7 +12,7 @@
 	text-align: center;
 }
 
-.verification-code-display {
+.verification-code-display, .loading-display {
 	position: relative;
 	top: 45%;
 	transform: translateY(-50%);

@@ -1,5 +1,9 @@
-.slideshow-image, .slick-list, .slick-initialized, .slick-track {
+.slideshow-image, .slick-list, .slick-initialized, .slick-track, .carousel {
 	width: auto;
 	height: 100%;
 	margin: auto;
+}
+
+.hidden {
+	display: none;
 }

@@ -4,16 +4,23 @@ import axios from "axios";
 import "./Verify.css"
 
 class Verify extends React.Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 
 		this.state = {code: ""};
 		let refreshInterval = 10000;
-		
 		let codeUpdate = setInterval(this.getCode.bind(this), refreshInterval);
 	}
 	
+	componentWillReceiveProps(nextProps) {
+        this.props = nextProps;
+    }
+	
 	getCode() {
+		if (this.props.mode != "verify") {
+			return;
+		}
+		
 		axios.get("http://localhost:8080/code").then(response => {
             console.log(response);
             this.setState({ code: response.data });
