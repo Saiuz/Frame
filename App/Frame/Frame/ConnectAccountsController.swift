@@ -42,7 +42,17 @@ class ConnectAccountsController: UIViewController, LoginButtonDelegate {
     
     func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
         if let accessToken = AccessToken.current {
-            print(accessToken.authenticationToken)
+            let url = URL(string: GCLOUD_SERVER + "/store_token")
+            
+            var verifyCodeURLRequest = URLRequest(url: url!)
+            verifyCodeURLRequest.httpMethod = "POST"
+            verifyCodeURLRequest.addValue("application/json", forHTTPHeaderField: "Accept")
+            verifyCodeURLRequest.httpBody = try? JSONSerialization.data(withJSONObject: ["code": self.current_code, "token": accessToken.authenticationToken], options: [])
+            
+            let task = URLSession.shared.dataTask(with: verifyCodeURLRequest, completionHandler: { (data, response, error) in
+                guard error == nil else { return }
+            })
+            task.resume()
         }
     }
     
