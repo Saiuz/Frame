@@ -22,11 +22,10 @@ def get_status():
 
 @app.route('/code')
 def get_code():
-    resp = jsonify('999 136')
-    resp.headers.add('Access-Control-Allow-Origin', '*')
-
+	resp = jsonify('999 136')
+	resp.headers.add('Access-Control-Allow-Origin', '*')
+	
 	return resp
-
 
 @app.route('/get_images')
 def get_images():
@@ -35,10 +34,10 @@ def get_images():
 			'https://i.pinimg.com/originals/62/20/d2/6220d255154fad0c911a3cb4c0072031.jpg',
 			'https://i.pinimg.com/originals/8b/a1/01/8ba101bc0e6fb061e79bef8c7bac97cc.jpg'
 		]
-    })
-    resp.headers.add('Access-Control-Allow-Origin', '*')
+	})
+	resp.headers.add('Access-Control-Allow-Origin', '*')
 
-	return jsonify(sample_data)
+	return resp
 
 if __name__ == '__main__':
     try:

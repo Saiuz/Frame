@@ -25,8 +25,9 @@ class Carousel extends React.Component {
     };
 	let imageToShow;
 	if (this.props.img) {
+		console.log(this.props.img)
 		imageToShow = this.props.img.map(function(imgSrc, index) {
-			return (<div key={index}><img className="slideshow-image" src={imgSrc.img} alt="HackUVIC2018"></img></div>)
+			return (<div key={index}><img className="slideshow-image" src={imgSrc} alt="HackUVIC2018"></img></div>)
 		});
 	 }
 	return (
