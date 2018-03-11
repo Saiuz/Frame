@@ -8,6 +8,8 @@
 
 import UIKit
 
+let GCLOUD_SERVER: String = "http://35.230.80.120:8080"
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 

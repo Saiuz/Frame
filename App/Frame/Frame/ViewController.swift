@@ -27,7 +27,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     var text_boxes: [UITextField]!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -73,52 +72,37 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     func sendVerificationCode() {
-        let defaults = UserDefaults.standard
-        defaults.set(self.current_code, forKey: "current_code")
+        UserDefaults.standard.set(self.current_code, forKey: "current_code")
         
+        let url = URL(string: GCLOUD_SERVER + "/code_verified")
         
-        let url = URL(string: "http://35.230.80.120:8080/code_verified")
+        var verifyCodeURLRequest = URLRequest(url: url!)
+        verifyCodeURLRequest.httpMethod = "POST"
+        verifyCodeURLRequest.addValue("application/json", forHTTPHeaderField: "Accept")
+        verifyCodeURLRequest.httpBody = try? JSONSerialization.data(withJSONObject: ["code": self.current_code], options: [])
         
-        var todosUrlRequest = URLRequest(url: url!)
-        todosUrlRequest.httpMethod = "POST"
-        todosUrlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
-        do {
-            let dic = ["code": self.current_code]
-            let jsonData = try? JSONSerialization.data(withJSONObject: dic, options: [])
-            
-            todosUrlRequest.httpBody = jsonData
-            // See if it's right
-            if let bodyData = todosUrlRequest.httpBody {
-                print(String(data: bodyData, encoding: .utf8) ?? "no body data")
-            }
-        } catch {
-            print(error)
-            //completionHandler(nil, error)
-        }
-        
-        let session = URLSession.shared
-        
-        let task = session.dataTask(with: todosUrlRequest, completionHandler: {
-            (data, response, error) in
-            guard error == nil else {
-                print(error)
-                //completionHandler(nil, error!)
-                return
-            }
-            
-            print(String(data: data!, encoding: .utf8))
+        let task = URLSession.shared.dataTask(with: verifyCodeURLRequest, completionHandler: { (data, _, error) in
+            guard error == nil else { return }
             
             if let jsonData = data, let data2 = try? JSONSerialization.jsonObject(with: jsonData, options: []) {
-                    print("data!", data2)
                 // TODO:// Error handling
             }
-            
-            print("Something Happened!")
-            // TODO: parse response
-            
-            //completionHandler(nil, nil)
         })
         task.resume()
+        
+        /*
+        url = URL(string: GCLOUD_SERVER + "/store_token")
+        
+        verifyCodeURLRequest = URLRequest(url: url!)
+        verifyCodeURLRequest.httpMethod = "POST"
+        verifyCodeURLRequest.addValue("application/json", forHTTPHeaderField: "Accept")
+        verifyCodeURLRequest.httpBody = try? JSONSerialization.data(withJSONObject: ["code": self.current_code, "token": "TIS THE TOKEN"], options: [])
+        
+        task = URLSession.shared.dataTask(with: verifyCodeURLRequest, completionHandler: { (data, response, error) in
+            guard error == nil else { return }
+        })
+        task.resume()
+        */
         
         /*
         let task = URLSession.shared.dataTask(with: url! as URL) { data, response, error in
@@ -152,8 +136,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
         
     }*/
-    
-    
     
     @IBAction func hitSetupButton(_ sender: Any) {
         self.didHitSetup = true
