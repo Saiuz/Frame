@@ -13,7 +13,7 @@ class App extends Component {
 		// Mode can be "photos" or "verify"
 		
 		this.state = {mode: "verify", code: "9991"};
-		let refreshInterval = 10000;
+		let refreshInterval = 5000;
 		this.getMode();
 		let modeUpdate = setInterval(this.getMode.bind(this), refreshInterval);
 	}

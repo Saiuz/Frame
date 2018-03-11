@@ -24,6 +24,9 @@ class ConnectAccountsController: UIViewController {
         let loginButton = UIButton(type: .custom)
         loginButton.setTitle("Login with Facebook", for: UIControlState())
         loginButton.addTarget(self, action: #selector(self.loginButtonClicked), for: .touchUpInside)
+        
+        loginButton.backgroundColor = UIColor(red: 50.0/255.0, green: 50.0/255.0, blue: 50.0/255.0, alpha: 1.0)
+        loginButton.layer.cornerRadius = 8
 
         loginButton.frame = CGRect(origin: loginButton.frame.origin, size: CGSize(width: 260, height: 60))
         
