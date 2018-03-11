@@ -1,8 +1,18 @@
 import React from 'react';
 import Slider from 'react-slick';
 import PropTypes from 'prop-types';
+import "./Carousel.css"
+
 
 class Carousel extends React.Component {
+	constructor(props) {
+        super(props);
+//        /this.state = cloneDeep({x: props.x, y: props.y});
+    }
+	
+	componentWillReceiveProps(nextProps) {
+        this.props = nextProps;
+    }
 	
   render() {
     var settings = {
@@ -14,9 +24,9 @@ class Carousel extends React.Component {
       slidesToScroll: 1
     };
 	let imageToShow;
-	if (this.props.images) {
-		imageToShow = this.props.images.map(img => {
-			return (<div><img src={img.src} alt={img.alt}></img></div>)
+	if (this.props.img) {
+		imageToShow = this.props.img.map(function(imgSrc, index) {
+			return (<div key={index}><img className="slideshow-image" src={imgSrc.img} alt="HackUVIC2018"></img></div>)
 		});
 	 }
 	return (

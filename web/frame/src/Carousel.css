@@ -1,0 +1,5 @@
+.slideshow-image, .slick-list, .slick-initialized, .slick-track {
+	width: auto;
+	height: 100%;
+	margin: auto;
+}

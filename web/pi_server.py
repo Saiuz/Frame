@@ -1,49 +1,112 @@
+from concurrent.futures import Future
 from datetime import timedelta
 from functools import update_wrapper
+from threading import Thread
+
+from flask import current_app, request, make_response
 
 from flask import Flask, jsonify
 app = Flask(__name__)
+
+def crossdomain(origin=None, methods=None, headers=None, max_age=21600,
+                attach_to_all=True, automatic_options=True):
+    """Decorator function that allows crossdomain requests.
+      Courtesy of
+      https://blog.skyred.fi/articles/better-crossdomain-snippet-for-flask.html
+    """
+    if methods is not None:
+        methods = ', '.join(sorted(x.upper() for x in methods))
+    if isinstance(max_age, timedelta):
+        max_age = max_age.total_seconds()
+
+    def get_methods():
+        """ Determines which methods are allowed
+        """
+        if methods is not None:
+            return methods
+
+        options_resp = current_app.make_default_options_response()
+        return options_resp.headers['allow']
+
+    def decorator(f):
+        """The decorator function
+        """
+        def wrapped_function(*args, **kwargs):
+            """Caries out the actual cross domain code
+            """
+            if automatic_options and request.method == 'OPTIONS':
+                resp = current_app.make_default_options_response()
+            else:
+                resp = make_response(f(*args, **kwargs))
+            if not attach_to_all and request.method != 'OPTIONS':
+                return resp
+
+            h = resp.headers
+            h['Access-Control-Allow-Origin'] = origin
+            h['Access-Control-Allow-Methods'] = get_methods()
+            h['Access-Control-Max-Age'] = str(max_age)
+            h['Access-Control-Allow-Credentials'] = 'true'
+            h['Access-Control-Allow-Headers'] = \
+                "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+            if headers is not None:
+                h['Access-Control-Allow-Headers'] = headers
+            return resp
+
+        f.provide_automatic_options = False
+        return update_wrapper(wrapped_function, f)
+    return decorator
+
+
 verification_required = True
 
 
+
 @app.route('/')
+@crossdomain(origin="*")
 def f():
     return 'Raspberry Pi App running'
 
-@app.route('/mode')
+@app.route('/mode', methods=["GET", "OPTIONS"])
+@crossdomain(origin="*")
 def get_status():
+	#print(verification_required)
+	#verification_required = True
+	
+	global verification_required
+	if verification_required is None:
+		verification_required = True
+	
 	# Return verify or photos
 	resp = 'verify' if verification_required else 'photos'
-    resp = jsonify(resp)
-    resp.headers.add('Access-Control-Allow-Origin', '*')
+	resp = jsonify(resp)
+	resp.headers.add('Access-Control-Allow-Origin', '*')
 
 	if verification_required:
 		verification_required = False
-
 	return resp
 
-@app.route('/code')
+@app.route('/code', methods=["GET", "OPTIONS"])
+@crossdomain(origin="*")
 def get_code():
 	return '999 136'
 
 
-@app.route('/get_images')
+@app.route('/get_images', methods=["GET", "OPTIONS"])
+@crossdomain(origin="*")
 def get_images():
 	sample_data = {
 		'images': [
-            {
-                'img': 'https://i.pinimg.com/originals/62/20/d2/6220d255154fad0c911a3cb4c0072031.jpg'
-			},
-			{
-                'img': 'https://i.pinimg.com/originals/8b/a1/01/8ba101bc0e6fb061e79bef8c7bac97cc.jpg'
-			}
+			'https://i.pinimg.com/originals/62/20/d2/6220d255154fad0c911a3cb4c0072031.jpg',
+			'https://i.pinimg.com/originals/8b/a1/01/8ba101bc0e6fb061e79bef8c7bac97cc.jpg'
 		]
     }
 
 	return jsonify(sample_data)
 
-if __name__ == '__main__':
-	try:
-		app.run(host='0.0.0.0', port=8080)
-	except:
-		app.run(port=8080)
+#if __name__ == '__main__':
+#verification_required = True
+
+try:
+	app.run(host='0.0.0.0', port=8080)
+except:
+	app.run(port=8080)
