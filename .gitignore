@@ -1,3 +1,4 @@
 .DS_Store
 app/memnet/memnet.caffemodel
+.Dockerfile.swp
 
