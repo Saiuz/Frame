@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		344D2BCE20554C98003426C5 /* AlbumsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344D2BCD20554C98003426C5 /* AlbumsViewController.swift */; };
 		346499CB2054777C004EC82E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346499CA2054777C004EC82E /* AppDelegate.swift */; };
 		346499CD2054777C004EC82E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346499CC2054777C004EC82E /* ViewController.swift */; };
 		346499D02054777C004EC82E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 346499CE2054777C004EC82E /* Main.storyboard */; };
@@ -27,6 +28,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		344D2BCD20554C98003426C5 /* AlbumsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsViewController.swift; sourceTree = "<group>"; };
 		346499C72054777C004EC82E /* Frame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Frame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		346499CA2054777C004EC82E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		346499CC2054777C004EC82E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -79,6 +81,7 @@
 		346499C92054777C004EC82E /* Frame */ = {
 			isa = PBXGroup;
 			children = (
+				344D2BCD20554C98003426C5 /* AlbumsViewController.swift */,
 				346499CA2054777C004EC82E /* AppDelegate.swift */,
 				346499CC2054777C004EC82E /* ViewController.swift */,
 				346499EA20547B12004EC82E /* ConnectAccountsController.swift */,
@@ -202,6 +205,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				344D2BCE20554C98003426C5 /* AlbumsViewController.swift in Sources */,
 				346499EB20547B12004EC82E /* ConnectAccountsController.swift in Sources */,
 				346499CD2054777C004EC82E /* ViewController.swift in Sources */,
 				346499CB2054777C004EC82E /* AppDelegate.swift in Sources */,
