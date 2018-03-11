@@ -13,6 +13,7 @@ hardcoded_images = ['https://i.pinimg.com/originals/62/20/d2/6220d255154fad0c911
 code_verified = {}
 code_to_token = {}
 code_to_images = {}
+score_cache = {}
 
 @app.route('/mode', methods = ['POST'])
 def get_mode():
@@ -33,11 +34,14 @@ def get_mode():
 @app.route('/get_images', methods = ['POST'])
 def get_images():
     code = request.form['code']
-
     code_to_images[code] = hardcoded_images
 
+    for image in code_to_images[code]:
+        if image not in score_cache:
+            score_cache[image] = calculate_score(image)
+
     resp = jsonify({
-		'images': [image for image in images if calculate_score(image) > 0.8]
+		'images': [image for image in code_to_images[code] if score_cache[image] > 0.8]
 	})
     resp.headers.add('Access-Control-Allow-Origin', '*')
 
