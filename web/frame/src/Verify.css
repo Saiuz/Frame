@@ -1,0 +1,27 @@
+.verification-code-grid {
+	color: white;
+	background-color: #363434;
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+	margin: 0 auto;
+	vertical-align: middle;
+	width: 515px;
+	height: 264px;
+	border: 1px solid black;
+	text-align: center;
+}
+
+.verification-code-display {
+	position: relative;
+	top: 45%;
+	transform: translateY(-50%);
+}
+
+.verification-code-display h1 {
+	
+}
+
+.verification-code-display h2 {
+	
+}

@@ -2,8 +2,12 @@
 @import "~slick-carousel/slick/slick-theme.css";
 
 
-.App {
-  text-align: center;
+.App, body, #root, html {
+	background-color: #222222;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
 }
 
 .App-logo {
