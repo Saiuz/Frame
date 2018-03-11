@@ -28,11 +28,16 @@ class Carousel extends React.Component {
 	}
 	
 	getImages() {
+		console.log(this.props.mode)
+		if (this.props.mode != "photos") {
+			return;
+		}
+		
 		if (this.state.loadedItems.length != this.state.images.length) {
 			console.log("Not done downloading last batch!")
 			return;
 		}
-		axios.get(serverURL + "/get_images").then(response => {
+		axios.get(serverURL + "/get_images?code=" + this.props.code).then(response => {
             console.log(response);
             this.setState({ images: response.data.images/*, loadedItems: []*/ });
         }).catch(response => {
