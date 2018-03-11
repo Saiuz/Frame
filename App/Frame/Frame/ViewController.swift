@@ -7,12 +7,6 @@
 //
 
 import UIKit
-import FacebookLogin
-
-struct Employee: Codable {
-    var name: String
-    var id: Int
-}
 
 class ViewController: UIViewController, UITextFieldDelegate {
 
@@ -126,38 +120,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
             }
         })
         task.resume()
-        
-        /*
-        url = URL(string: GCLOUD_SERVER + "/store_token")
-        
-        verifyCodeURLRequest = URLRequest(url: url!)
-        verifyCodeURLRequest.httpMethod = "POST"
-        verifyCodeURLRequest.addValue("application/json", forHTTPHeaderField: "Accept")
-        verifyCodeURLRequest.httpBody = try? JSONSerialization.data(withJSONObject: ["code": self.current_code, "token": "TIS THE TOKEN"], options: [])
-        
-        task = URLSession.shared.dataTask(with: verifyCodeURLRequest, completionHandler: { (data, response, error) in
-            guard error == nil else { return }
-        })
-        task.resume()
-        */
-        
-        /*
-        let task = URLSession.shared.dataTask(with: url! as URL) { data, response, error in
-            
-            guard let data = data, error == nil else { return }
-            let jsonDecoder = JSONDecoder()
-            
-            do {
-                let jsonData = try jsonDecoder.decode(Employee.self, from: data)
-                print(jsonData)
-                
-            } catch {
-                print(error)
-            }
-        }
-        
-        task.resume()
-        */
     }
     
     
