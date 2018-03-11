@@ -28,7 +28,7 @@ class App extends Component {
 	}
 	
 	getImages() {
-		axios.get("http://localhost").then(response => {
+		axios.get("http://localhost/get_images").then(response => {
             console.log(response);
             this.setState({ images: response.data.images });
         }).catch(response => {

@@ -5,5 +5,6 @@ RUN pip install scikit-image
 RUN pip install opencv-python
 
 COPY app /app
-#WORKDIR /app
-#ENTRYPOINT ["python main.py"]
+WORKDIR /app
+EXPOSE 8080
+ENTRYPOINT ["python main.py"]

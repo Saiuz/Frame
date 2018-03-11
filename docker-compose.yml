@@ -1,0 +1,29 @@
+version: '3'
+services:
+  piweb:
+    image: piweb:latest
+    container_name: "piweb"
+    build:
+      context: web
+      dockerfile: Dockerfile
+    links:
+      - flaskweb #:db1.prod.ability.com
+    ports:
+      - 80
+    expose:
+      - 80
+    depends_on:
+      - flaskweb
+    tty: true
+  flaskweb:
+    image: flaskweb:latest
+    container_name: "flaskweb"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    expose:
+      - 8080
+    ports:
+      - 8080
+    command: python /app/main.py
+    tty: true
