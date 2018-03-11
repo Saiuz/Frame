@@ -10,7 +10,7 @@ import UIKit
 import FacebookLogin
 import FacebookCore
 
-class ConnectAccountsController: UIViewController, LoginButtonDelegate {
+class ConnectAccountsController: UIViewController {
     
     @IBOutlet weak var IconStack: UIStackView!
     
@@ -50,31 +50,22 @@ class ConnectAccountsController: UIViewController, LoginButtonDelegate {
             case .cancelled:
                 print("User cancelled login.")
             case .success(let grantedPermissions, let declinedPermissions, let accessToken):
-                print("Logged in!")
+                if let accessToken = AccessToken.current {
+                    let url = URL(string: GCLOUD_SERVER + "/store_token")
+                    
+                    var verifyCodeURLRequest = URLRequest(url: url!)
+                    verifyCodeURLRequest.httpMethod = "POST"
+                    verifyCodeURLRequest.addValue("application/json", forHTTPHeaderField: "Accept")
+                    verifyCodeURLRequest.httpBody = try? JSONSerialization.data(withJSONObject: ["code": self.current_code, "token": accessToken.authenticationToken], options: [])
+                    
+                    let task = URLSession.shared.dataTask(with: verifyCodeURLRequest, completionHandler: { (data, response, error) in
+                        guard error == nil else { return }
+                    })
+                    task.resume()
+                }
             }
         }
     }
-    
-    func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
-        if let accessToken = AccessToken.current {
-            let url = URL(string: GCLOUD_SERVER + "/store_token")
-            
-            var verifyCodeURLRequest = URLRequest(url: url!)
-            verifyCodeURLRequest.httpMethod = "POST"
-            verifyCodeURLRequest.addValue("application/json", forHTTPHeaderField: "Accept")
-            verifyCodeURLRequest.httpBody = try? JSONSerialization.data(withJSONObject: ["code": self.current_code, "token": accessToken.authenticationToken], options: [])
-            
-            let task = URLSession.shared.dataTask(with: verifyCodeURLRequest, completionHandler: { (data, response, error) in
-                guard error == nil else { return }
-            })
-            task.resume()
-        }
-    }
-    
-    func loginButtonDidLogOut(_ loginButton: LoginButton) {
-        
-    }
-    
     
     @IBAction func connectFB(_ sender: Any) {
         

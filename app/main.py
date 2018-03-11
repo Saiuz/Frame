@@ -1,4 +1,5 @@
 from memnet import Memnet
+from collections import defaultdict
 
 from flask import Flask, request, jsonify
 import urllib
@@ -10,20 +11,17 @@ import glob
 
 app = Flask(__name__)
 model = Memnet()
-hardcoded_images = ['https://i.pinimg.com/originals/62/20/d2/6220d255154fad0c911a3cb4c0072031.jpg',
-                   'https://i.pinimg.com/originals/8b/a1/01/8ba101bc0e6fb061e79bef8c7bac97cc.jpg']
-code_verified = {}
 code_to_token = {}
-code_to_images = {}
+code_to_images = defaultdict(lambda: [])
 score_cache = {}
 
 @app.route('/get_mode')
 def get_mode():
     code = request.args.get('code')
 
-    if code not in code_verified or not code_verified[code]:
-        code_verified[code] = False
+    if code not in code_to_token:
         resp = jsonify('verify')
+        print("Verify stage")
     else:
         resp = jsonify('photos')
 
@@ -32,74 +30,45 @@ def get_mode():
 
 @app.route('/get_images')
 def get_images():
+    global code_to_images
+    global code_to_token
+    global score_cache
     code = request.args.get('code')
-    code_to_images[code] = hardcoded_images
 
+    token = code_to_token[code]
+    albums = json.loads(requests.get('https://graph.facebook.com/me/albums?access_token={}'.format(token)).content)
+    albums = [data['id'] for data in albums['data']]
+
+    for album in albums:
+        code_to_images[code] += [data['images'][0]['source'] for data in json.loads(requests.get('https://graph.facebook.com/photos?id={}&fields=images&access_token={}'.format(album, token)).content)['data']]
     for image in code_to_images[code]:
         if image not in score_cache:
-            score_cache[image] = model.calculate_memorability(image)
-
+            score_cache[image] = calculate_score(image)
     resp = jsonify({
         'images': [image for image in code_to_images[code] if score_cache[image] > 0.8]
     })
-    print([image for image in code_to_images[code] if score_cache[image] > 0.8])
     resp.headers.add('Access-Control-Allow-Origin', '*')
-
     return resp
 
-def caclulate_score(image_link):
-    image_link = request.form['data']
+def calculate_score(image_link):
     urllib.urlretrieve(image_link, "image.jpg")
 
     return model.calculate_memorability('./image.jpg')
 
-def compare_photos():
-    data = request.form['data']
-
-    # TODO: Fix this implementation
-    for i in xrange(len(pics)):
-        for j in xrange(i + 1, len(pics)):
-            if i < len(pics) and j < len(pics):
-                imageA = cv2.imread(pics[i])
-                imageB = cv2.imread(pics[j])
-
-                grayA = cv2.cvtColor(imageA, cv2.COLOR_BGR2GRAY)
-                grayB = cv2.cvtColor(imageB, cv2.COLOR_BGR2GRAY)
-
-                score, _ = compare_ssim(grayA, grayB, full=True)
-
-                if score > 0.3: # pictures are similar
-                    pics.pop(j)
-
-    return pics
-
 @app.route('/code_verified', methods = ['POST']) # Received from phone
 def code_exists():
     code = json.loads(request.form.to_dict().keys()[0])['code']
-    print(code)
+    return jsonify(1)
 
-    if code in code_verified:
-        code_verified[code] = True
-        return jsonify(1)
-    else:
-        return jsonify(-1)
 
 @app.route('/store_token', methods = ['POST']) # Received from phone
 def store_token():
     code = json.loads(request.form.to_dict().keys()[0])['code']
     token = json.loads(request.form.to_dict().keys()[0])['token']
 
-    print("{}: {}".format(code, token))
-
     code_to_token[code] = token
-    prefetch_images(token)
 
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
-
-def prefetch_images(token):
-    albums = requests.get('https://graph.facebook.com/me/albums?access_token={}'.format(token))
-
-    print albums.content
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
