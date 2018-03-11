@@ -62,12 +62,10 @@ verification_required = True
 
 
 @app.route('/')
-@crossdomain(origin="*")
 def f():
     return 'Raspberry Pi App running'
 
 @app.route('/mode', methods=["GET", "OPTIONS"])
-@crossdomain(origin="*")
 def get_status():
 	#print(verification_required)
 	#verification_required = True
@@ -86,13 +84,11 @@ def get_status():
 	return resp
 
 @app.route('/code', methods=["GET", "OPTIONS"])
-@crossdomain(origin="*")
 def get_code():
 	return '999 136'
 
 
 @app.route('/get_images', methods=["GET", "OPTIONS"])
-@crossdomain(origin="*")
 def get_images():
 	sample_data = {
 		'images': [
