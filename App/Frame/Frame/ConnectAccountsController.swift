@@ -14,9 +14,6 @@ class ConnectAccountsController: UIViewController, LoginButtonDelegate {
     
     @IBOutlet weak var IconStack: UIStackView!
     
-    @IBOutlet weak var FBButton: UIButton!
-    @IBOutlet weak var InstButton: UIButton!
-    
     @IBOutlet weak var finishButton: UIButton!
     
     var current_code: String?
@@ -24,9 +21,13 @@ class ConnectAccountsController: UIViewController, LoginButtonDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let loginButton = LoginButton(readPermissions: [.userPhotos])
+        let loginButton = UIButton(type: .custom)
+        loginButton.setTitle("Login with Facebook", for: UIControlState())
+        loginButton.addTarget(self, action: #selector(self.loginButtonClicked), for: .touchUpInside)
+
+        loginButton.frame = CGRect(origin: loginButton.frame.origin, size: CGSize(width: 260, height: 60))
+        
         loginButton.center = view.center
-        loginButton.delegate = self
         
         view.addSubview(loginButton)
         
@@ -38,6 +39,20 @@ class ConnectAccountsController: UIViewController, LoginButtonDelegate {
         self.finishButton.layer.cornerRadius = 8
         
         // Do any additional setup after loading the view.
+    }
+    
+    @objc func loginButtonClicked() {
+        let loginManager = LoginManager()
+        loginManager.logIn(readPermissions: [ .userPhotos ], viewController: self) { loginResult in
+            switch loginResult {
+            case .failed(let error):
+                print(error)
+            case .cancelled:
+                print("User cancelled login.")
+            case .success(let grantedPermissions, let declinedPermissions, let accessToken):
+                print("Logged in!")
+            }
+        }
     }
     
     func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
