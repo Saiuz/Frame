@@ -14,12 +14,12 @@ class App extends Component {
 		this.state = {images: [], mode: "verify"};
 		let refreshInterval = 10000;
 		
-		//let modeUpdate = setInterval(this.getImages.bind(this), refreshInterval);
-		//let imgUpdate = setInterval(this.getImages.bind(this), refreshInterval);
+		let modeUpdate = setInterval(this.getMode.bind(this), refreshInterval);
+		let imgUpdate = setInterval(this.getImages.bind(this), refreshInterval);
 	}
 	
 	getMode() {
-		axios.get("http://localhost/mode").then(response => {
+		axios.get("http://localhost:8080/mode").then(response => {
             console.log(response);
             this.setState({ mode: response.data });
         }).catch(response => {
@@ -28,7 +28,7 @@ class App extends Component {
 	}
 	
 	getImages() {
-		axios.get("http://localhost/get_images").then(response => {
+		axios.get("http://localhost:8080/get_images").then(response => {
             console.log(response);
             this.setState({ images: response.data.images });
         }).catch(response => {

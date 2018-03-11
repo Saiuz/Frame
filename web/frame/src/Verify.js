@@ -7,14 +7,14 @@ class Verify extends React.Component {
 	constructor() {
 		super();
 
-		this.state = {code: "999 136"};
+		this.state = {code: ""};
 		let refreshInterval = 10000;
 		
-		//let codeUpdate = setInterval(this.getCode.bind(this), refreshInterval);
+		let codeUpdate = setInterval(this.getCode.bind(this), refreshInterval);
 	}
 	
 	getCode() {
-		axios.get("http://localhost/code").then(response => {
+		axios.get("http://localhost:8080/code").then(response => {
             console.log(response);
             this.setState({ code: response.data });
         }).catch(response => {

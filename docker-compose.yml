@@ -9,9 +9,9 @@ services:
     links:
       - flaskweb #:db1.prod.ability.com
     ports:
-      - 80
+      - 80:8080
     expose:
-      - 80
+      - 8080
     depends_on:
       - flaskweb
     tty: true
@@ -25,6 +25,6 @@ services:
     expose:
       - 8080
     ports:
-      - 8080
+      - 8080:8080
     command: python /app/main.py
     tty: true
