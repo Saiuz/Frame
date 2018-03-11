@@ -10,6 +10,7 @@ import UIKit
 
 class ViewController: UIViewController, UITextFieldDelegate {
 
+    @IBOutlet weak var codeLabel: UILabel!
     @IBOutlet weak var SetupButton: UIButton!
     @IBOutlet weak var IconStack: UIStackView!
     @IBOutlet weak var memoriesLabel: UILabel!
@@ -27,6 +28,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
         // Do any additional setup after loading the view, typically from a nib.
         
         self.code1.alpha = 0.0
+        self.codeLabel.alpha = 0.0
+        
+        
         self.SetupButton.layer.cornerRadius = 8
         self.code1.delegate = self
         self.code1.keyboardType = .phonePad
@@ -48,7 +52,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
 
     @IBAction func editChanged(_ sender: UITextField) {
         print("Editing Changed!")
-    
         self.current_code = ""
         if let tmp = sender.text, tmp != "" {
             print("Adding Character!")
@@ -81,7 +84,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBAction func hitSetupButton(_ sender: Any) {
         self.didHitSetup = true
         
-        UIView.animate(withDuration: 2, animations: {
+        UIView.animate(withDuration: 1, animations: {
             // Remove setup button
             self.SetupButton.alpha = 0.0
             self.memoriesLabel.alpha = 0.0
@@ -91,6 +94,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             
             // Display Numbers and keyboard
             self.code1.alpha = 1.0
+            self.codeLabel.alpha = 1.0
             }) { (error) in
                 self.SetupButton.isEnabled = false
                 self.SetupButton.isHidden = true
