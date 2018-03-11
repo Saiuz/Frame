@@ -21,7 +21,15 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var IconStack: UIStackView!
     @IBOutlet weak var memoriesLabel: UILabel!
     
+    @IBOutlet weak var codeGroup: UIStackView!
+    
+    
     @IBOutlet weak var code1: UITextField!
+    @IBOutlet weak var code2: UITextField!
+    @IBOutlet weak var code3: UITextField!
+    @IBOutlet weak var code4: UITextField!
+    
+    
     
     var didHitSetup = false
     var current_code = ""
@@ -32,21 +40,20 @@ class ViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        self.code1.alpha = 0.0
+        self.codeGroup.alpha = 0.0
         self.codeLabel.alpha = 0.0
         
         
         self.SetupButton.layer.cornerRadius = 8
-        self.code1.delegate = self
-        self.code1.keyboardType = .phonePad
-        /*self.code2.delegate = self
-        self.code2.keyboardType = .numberPad
-        self.code3.delegate = self
-        self.code3.keyboardType = .numberPad
-        self.code4.delegate = self
-        self.code4.keyboardType = .numberPad*/
+        self.text_boxes = [self.code1, self.code2, self.code3, self.code4]
         
-        self.text_boxes = [self.code1]//, self.code2, self.code3, self.code4]
+        for txt in self.text_boxes {
+            txt.delegate = self
+            txt.keyboardType = .numberPad
+            txt.font = UIFont(name: "Helvetica", size: 30)
+            txt.layer.cornerRadius = 8
+        }
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -54,17 +61,46 @@ class ViewController: UIViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+    
+    @IBAction func didBeginEditing(_ sender: UITextField) {
+        let this_txt_index = self.text_boxes.index(of: sender)
+        
+        print("Did Begin Editing! \(this_txt_index)")
+        
+        if let index = this_txt_index, self.current_code.count != index {
+            sender.resignFirstResponder()
+            self.text_boxes[self.current_code.count].becomeFirstResponder()
+            
+            // Move text over
+            for txt in self.text_boxes {
+                let txt_index = self.text_boxes.index(of: sender)
+                if let index = txt_index, index <= self.current_code.count {
+                    let index2 = self.current_code.index(self.current_code.startIndex, offsetBy: index)
+                    //txt.text = String(self.current_code[index2])
+                } else {
+                    //txt.text = ""
+                }
+                
+                
+            }
+        }
+        
+    }
+    
 
     @IBAction func editChanged(_ sender: UITextField) {
         print("Editing Changed!")
         self.current_code = ""
-        if let tmp = sender.text, tmp != "" {
-            print("Adding Character!")
-            self.current_code.append(tmp)
+        for txt in self.text_boxes {
+            if let tmp = txt.text, tmp != "" {
+                print("Adding Character!")
+                self.current_code.append(tmp)
+            }
         }
         
+        
         print("Current Code: \(self.current_code)")
-        //self.moveTextField()
+        self.moveTextField()
         if self.current_code.count >= 4 {
             sender.resignFirstResponder()
             self.sendVerificationCode()
@@ -124,19 +160,24 @@ class ViewController: UIViewController, UITextFieldDelegate {
         */
     }
     
-    /*
+    
     func moveTextField() {
-        let current_index = self.current_code.count
+        
+        let current_index = self.current_code.count - 1
+        if current_index == -1 {
+            return
+        }
+        
         print("Current Index: \(current_index)")
         let lastTextBox: UITextField = self.text_boxes[current_index]
         lastTextBox.resignFirstResponder()
         
-        if current_index < self.text_boxes.count {
+        if current_index + 1 < self.text_boxes.count {
             let nextTextBox: UITextField = self.text_boxes[current_index + 1]
             nextTextBox.becomeFirstResponder()
         }
         
-    }*/
+    }
     
     @IBAction func hitSetupButton(_ sender: Any) {
         self.didHitSetup = true
@@ -150,7 +191,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             self.IconStack.center = CGPoint(x: self.IconStack.center.x, y: 77 + (self.IconStack.frame.height / 2) )
             
             // Display Numbers and keyboard
-            self.code1.alpha = 1.0
+            self.codeGroup.alpha = 1.0
             self.codeLabel.alpha = 1.0
             }) { (error) in
                 self.SetupButton.isEnabled = false

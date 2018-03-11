@@ -63,16 +63,6 @@
                                     <action selector="hitSetupButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6d2-MP-y59"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="x7t-iO-fz5">
-                                <rect key="frame" x="35" y="318.5" width="304" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" keyboardAppearance="alert"/>
-                                <connections>
-                                    <action selector="editChanged:" destination="BYZ-38-t0r" eventType="editingChanged" id="C5S-2F-fWN"/>
-                                </connections>
-                            </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Enter Code From Frame" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OZ5-q9-dE8">
                                 <rect key="frame" x="90.5" y="245" width="194" height="23.5"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -80,14 +70,75 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="ZCB-5X-9vW">
+                                <rect key="frame" x="97.5" y="298.5" width="180" height="50"/>
+                                <subviews>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="x7t-iO-fz5">
+                                        <rect key="frame" x="0.0" y="0.0" width="41.5" height="50"/>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" keyboardAppearance="alert"/>
+                                        <connections>
+                                            <action selector="didBeginEditing:" destination="BYZ-38-t0r" eventType="editingDidBegin" id="xje-bj-dfS"/>
+                                            <action selector="editChanged:" destination="BYZ-38-t0r" eventType="editingChanged" id="C5S-2F-fWN"/>
+                                            <action selector="editChanged:" destination="BYZ-38-t0r" eventType="editingDidEnd" id="S7I-Af-CVL"/>
+                                        </connections>
+                                    </textField>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Fsm-s8-6nd">
+                                        <rect key="frame" x="46.5" y="0.0" width="41" height="50"/>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" keyboardAppearance="alert"/>
+                                        <connections>
+                                            <action selector="didBeginEditing:" destination="BYZ-38-t0r" eventType="editingDidBegin" id="DOg-Lb-rjF"/>
+                                            <action selector="editChanged:" destination="BYZ-38-t0r" eventType="editingChanged" id="Cw4-rF-9bT"/>
+                                            <action selector="editChanged:" destination="BYZ-38-t0r" eventType="editingDidEnd" id="w9L-tM-5Ha"/>
+                                        </connections>
+                                    </textField>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="heB-9e-fFT">
+                                        <rect key="frame" x="92.5" y="0.0" width="41.5" height="50"/>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" keyboardAppearance="alert"/>
+                                        <connections>
+                                            <action selector="didBeginEditing:" destination="BYZ-38-t0r" eventType="editingDidBegin" id="P9o-c7-oBz"/>
+                                            <action selector="editChanged:" destination="BYZ-38-t0r" eventType="editingChanged" id="03W-Ia-7aU"/>
+                                            <action selector="editChanged:" destination="BYZ-38-t0r" eventType="editingDidEnd" id="6Cy-44-Cuj"/>
+                                        </connections>
+                                    </textField>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="P2l-h4-q0s">
+                                        <rect key="frame" x="139" y="0.0" width="41" height="50"/>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" keyboardAppearance="alert"/>
+                                        <connections>
+                                            <action selector="didBeginEditing:" destination="BYZ-38-t0r" eventType="editingDidBegin" id="SXl-4h-mWd"/>
+                                            <action selector="editChanged:" destination="BYZ-38-t0r" eventType="editingDidEnd" id="tW2-gv-d5G"/>
+                                            <action selector="editChanged:" destination="BYZ-38-t0r" eventType="editingChanged" id="vqR-l8-gHj"/>
+                                        </connections>
+                                    </textField>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="180" id="7QA-G4-NWb"/>
+                                    <constraint firstAttribute="height" constant="50" id="jop-M9-zDv"/>
+                                </constraints>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="0.13333333333333333" green="0.13333333333333333" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="ZCB-5X-9vW" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="-10" id="JYF-JK-GBx"/>
+                            <constraint firstItem="ZCB-5X-9vW" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="VI6-kE-LbA"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
                         <outlet property="IconStack" destination="Dzo-OW-2EE" id="2Z4-LK-ehw"/>
                         <outlet property="SetupButton" destination="sz9-Gk-LRr" id="QZ7-2G-Jsk"/>
                         <outlet property="code1" destination="x7t-iO-fz5" id="GgQ-Wm-XI0"/>
+                        <outlet property="code2" destination="Fsm-s8-6nd" id="bnR-8c-gZs"/>
+                        <outlet property="code3" destination="heB-9e-fFT" id="xJU-Xx-6bF"/>
+                        <outlet property="code4" destination="P2l-h4-q0s" id="vfW-DT-jdc"/>
+                        <outlet property="codeGroup" destination="ZCB-5X-9vW" id="jue-BB-TWK"/>
                         <outlet property="codeLabel" destination="OZ5-q9-dE8" id="XaZ-AM-3O2"/>
                         <outlet property="memoriesLabel" destination="ZtS-AA-VJ1" id="ZzD-qs-Xkh"/>
                         <segue destination="yT5-zk-NIe" kind="show" identifier="connectAccounts" id="VWF-Ph-gae"/>
