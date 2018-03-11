@@ -15,6 +15,7 @@ services:
     depends_on:
       - flaskweb
     tty: true
+    command: python /pi_server.py
   flaskweb:
     image: flaskweb:latest
     container_name: "flaskweb"
