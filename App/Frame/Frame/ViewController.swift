@@ -77,7 +77,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         defaults.set(self.current_code, forKey: "current_code")
         
         
-        let url = URL(string: "http://35.230.80.120:8080/code")
+        let url = URL(string: "http://35.230.80.120:8080/code_verified")
         
         var todosUrlRequest = URLRequest(url: url!)
         todosUrlRequest.httpMethod = "POST"
@@ -110,6 +110,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             
             if let jsonData = data, let data2 = try? JSONSerialization.jsonObject(with: jsonData, options: []) {
                     print("data!", data2)
+                // TODO:// Error handling
             }
             
             print("Something Happened!")

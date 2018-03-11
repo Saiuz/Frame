@@ -4,6 +4,7 @@ import './App.css';
 import Carousel from './Carousel.js';
 import Verify from './Verify.js';
 import axios from 'axios';
+import serverURL from "./Const.js";
 
 class App extends Component {
 	constructor() {
@@ -11,14 +12,23 @@ class App extends Component {
 		
 		// Mode can be "photos" or "verify"
 		
-		this.state = {mode: "verify"};
+		this.state = {mode: "verify", code: "9991"};
 		let refreshInterval = 10000;
 		
 		let modeUpdate = setInterval(this.getMode.bind(this), refreshInterval);
 	}
 	
 	getMode() {
-		axios.get("http://localhost:8080/mode").then(response => {
+		fetch(serverURL + "/mode", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				"Accept": "application/json",
+			},
+			body: JSON.stringify({
+				code: this.state.code,
+			})
+		}).then(response => {
             console.log(response);
             this.setState({ mode: response.data });
         }).catch(response => {
@@ -31,7 +41,7 @@ class App extends Component {
 	if (this.state.mode == "photos") {
 		widget = <Carousel />
 	} else if (this.state.mode == "verify") {
-		widget = <Verify mode={this.state.mode}/>
+		widget = <Verify mode={this.state.mode} code={this.state.code}/>
 	} else {
 		widget = <div></div>
 	}
