@@ -2,6 +2,8 @@ from memnet import Memnet
 
 from flask import Flask, request, jsonify
 import urllib
+import requests
+import json
 import cv2
 from skimage.measure import compare_ssim
 import glob
@@ -28,18 +30,19 @@ def get_mode():
     resp.headers.add('Access-Control-Allow-Origin', '*')
     return resp
 
-@app.route('/get_images', methods = ['POST'])
+@app.route('/get_images')
 def get_images():
-    code = request.form['code']
+    code = request.args.get('code')
     code_to_images[code] = hardcoded_images
 
     for image in code_to_images[code]:
         if image not in score_cache:
-            score_cache[image] = calculate_score(image)
+            score_cache[image] = model.calculate_memorability(image)
 
     resp = jsonify({
-		'images': [image for image in code_to_images[code] if score_cache[image] > 0.8]
-	})
+        'images': [image for image in code_to_images[code] if score_cache[image] > 0.8]
+    })
+    print([image for image in code_to_images[code] if score_cache[image] > 0.8])
     resp.headers.add('Access-Control-Allow-Origin', '*')
 
     return resp
@@ -72,8 +75,7 @@ def compare_photos():
 
 @app.route('/code_verified', methods = ['POST']) # Received from phone
 def code_exists():
-    print(request.form)
-    code = request.form['code']
+    code = json.loads(request.form.to_dict().keys()[0])['code']
     print(code)
 
     if code in code_verified:
@@ -82,12 +84,22 @@ def code_exists():
     else:
         return jsonify(-1)
 
-@app.route('/token', methods = ['POST']) # Received from phone
+@app.route('/store_token', methods = ['POST']) # Received from phone
 def store_token():
-    code = request.form['code']
-    token = request.form['token']
+    code = json.loads(request.form.to_dict().keys()[0])['code']
+    token = json.loads(request.form.to_dict().keys()[0])['token']
+
+    print("{}: {}".format(code, token))
 
     code_to_token[code] = token
+    prefetch_images(token)
+
+    return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+def prefetch_images(token):
+    albums = requests.get('https://graph.facebook.com/me/albums?access_token={}'.format(token))
+
+    print albums.content
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
